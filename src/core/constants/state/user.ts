@@ -1,0 +1,18 @@
+export const USER_PREFERENCES_NAMES = [
+	'Web3 Metaverse',
+	'Archietect',
+	'Sports',
+	'Movies',
+	'Fashion',
+	'Gaming',
+	'Golf',
+	'Interior Design',
+	'Web3 Pis',
+	'Tokenization',
+	'Wallets',
+	'AirDops',
+	'Token Swap',
+	'PortFolio',
+	'NFT Value Estimator',
+	'NFT Explorer',
+] as const;

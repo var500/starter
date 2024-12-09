@@ -1,0 +1,21 @@
+{
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+	},
+	"editor.codeActionsOnSave": {
+		"source.fixAll": "explicit",
+		"source.fixAll.eslint": "explicit"
+	},
+	"eslint.validate": ["javascript", "typescript", "typescriptreact"],
+	"files.associations": {
+		"*.ts": "typescriptreact"
+	},
+	"editor.formatOnSave": true,
+	"editor.formatOnSaveMode": "file", // required to format on save
+	"files.autoSave": "off", // optional but recommended
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"stylelint.validate": ["css", "scss", ".module.scss"],
+	"typescript.enablePromptUseWorkspaceTsdk": true,
+	"typescript.tsserver.pluginPaths": ["typescript-plugin-css-modules"]
+}

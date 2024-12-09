@@ -1,0 +1,31 @@
+name: Notify Jenkins on Workflow Completion
+
+on:
+  workflow_run:
+    workflows: ["Build"]  # The name of the workflow this depends on
+    types:
+      - completed  # Trigger when the workflow completes (success or failure)
+
+jobs:
+  trigger_jenkins:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug workflow_run event
+        run: echo "Event ${{ toJson(github.event) }}"
+
+      - name: Check if workflow succeeded
+        id: check_result
+        run: |
+          echo "Status: ${{ github.event.workflow_run.conclusion }}"
+
+      - name: Trigger Jenkins on success
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        run: |
+          curl -X POST "${{ secrets.JENKINS_WEBHOOK_URL }}" \
+            -d ''  # You can add more data if needed
+
+      - name: Trigger Jenkins on failure
+        if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+        run: |
+          curl -X POST "${{ secrets.JENKINS_WEBHOOK_URL }}" \
+            -d ''  # You can add more data if needed

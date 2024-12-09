@@ -1,0 +1,29 @@
+.rectangle {
+	@apply relative sm:w-[247px] h-[144px] rounded-tr-[8px] rounded-br-[8px] overflow-hidden w-full;
+
+	backdrop-filter: blur(223px);
+}
+
+.backgroundOverlay {
+	@apply absolute inset-0 bg-[#9B51E0] opacity-10 pointer-events-none;
+}
+
+.content {
+	@apply relative z-10 flex flex-col h-full p-4;
+
+	.badge {
+		@apply h-[38px] w-[38px];
+	}
+
+	.topContainer {
+		@apply flex w-full justify-between h-1/2;
+
+		.title {
+			@apply flex content-end items-end;
+		}
+	}
+
+	.number {
+		@apply flex items-center h-1/2 w-full justify-end;
+	}
+}

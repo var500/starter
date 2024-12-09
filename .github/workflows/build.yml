@@ -1,0 +1,57 @@
+name: Build
+on:
+  push:
+    branches:
+      - develop
+permissions:
+ contents: read
+ packages: write     
+jobs:
+    coverage:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                  repository: ${{ github.event.pull_request.head.repo.full_name }}
+                  ref: ${{ github.event.pull_request.head.ref }}
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 20.4.0 
+
+            - name: Get yarn cache directory path
+              id: yarn-cache-dir-path
+              run: echo "::set-output name=dir::$(yarn cache dir)"
+
+            - uses: actions/cache@v2
+              id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+              with:
+                  path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+                  key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-yarn-
+            - name: Installing dependencies
+              run: npm install --legacy-peer-deps && npm run lint -- --fix
+            - uses: oNaiPs/secrets-to-env-action@v1
+              with:
+                secrets: ${{ toJSON(secrets) }}
+            - name: Compile code
+              run: export CI=false && npm run build 
+            - name: remove .next/cache folder
+              run: rm -R .next/cache
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v1
+              with:
+                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                aws-region: us-east-1
+
+            - name: Deploy static site to S3 bucket
+              run: aws s3 sync . s3://noncestater/frontend --delete --exclude 'node_modules/*' --exclude 'src/*' --exclude '.git/*'
+            - name: Notify Jenkins on successful deploy
+              if: ${{ success() }}
+              run: |
+                curl -u "${{ secrets.JENKINS_USERNAME }}:${{ secrets.JENKINS_API_TOKEN }}" \
+                     -X POST "${{ secrets.JENKINS_WEBHOOK_URL }}"
+

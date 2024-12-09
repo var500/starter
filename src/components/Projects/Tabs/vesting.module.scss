@@ -1,0 +1,27 @@
+.tokensOuterDiv {
+	@apply absolute left-1/2 top-1/2 z-10 flex h-fit w-fit -translate-x-1/2 -translate-y-1/2 transform items-center justify-center gap-3.5 rounded-full bg-gradient-to-b from-[#1b1b1b] to-neutral-950 p-3 shadow-md shadow-black;
+
+	.tokensDiv {
+		@apply flex h-[310px] w-[310px] flex-col items-center justify-center gap-3 rounded-full border-gray-800 bg-gradient-to-b from-[#1b1b1b] to-neutral-950 shadow-md shadow-black/65;
+
+		.contentDiv {
+			@apply flex flex-col items-start justify-center gap-2.5 text-[#FFFFFF];
+
+			.subtitle {
+				@apply text-left text-sm font-thin;
+			}
+
+			.titleDiv {
+				@apply flex flex-row items-end;
+			}
+
+			.title {
+				@apply ml-0.5 text-3xl font-medium;
+			}
+
+			.decimal {
+				@apply mb-1.5 ml-2 font-medium;
+			}
+		}
+	}
+}
